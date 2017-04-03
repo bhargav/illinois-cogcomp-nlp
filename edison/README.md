@@ -1,4 +1,4 @@
-# illinois-edison
+# Illinois Edison
 
 *Edison* is a feature extraction framework that uses the data structures of [illinois-core-utilities](../core-utilities/README.md)
 to extract features used in NLP applications.
@@ -17,7 +17,7 @@ that can be applied to text to generate features.
 
 ## Maven dependency
 To use Edison as a Maven dependency please add the following lines to your `pom.xml` file:
-```
+```xml
 <repositories>
     <repository>
         <id>CogcompSoftware</id>
@@ -30,7 +30,7 @@ To use Edison as a Maven dependency please add the following lines to your `pom.
     <dependency>
         <groupId>edu.illinois.cs.cogcomp</groupId>
         <artifactId>illinois-edison</artifactId>
-        <version>3.0.44</version>
+        <version>#VERSION</version>
     </dependency>
 </dependencies>
 ```
@@ -39,8 +39,10 @@ or if you are using SBT:
 ```
 resolvers += "CogcompSoftware" at "http://cogcomp.cs.illinois.edu/m2repo/"
 
-libraryDependencies += "edu.illinois.cs.cogcomp" % "illinois-edison" % "3.0.44"
+libraryDependencies += "edu.illinois.cs.cogcomp" % "illinois-edison" % "#VERSION"
 ```
+
+where `#VERSION` is the version included in the `pom.xml` file. 
 
 ## The `FeatureExtractor` interface
 Edison comes with several built-in feature extractors. 
@@ -98,3 +100,15 @@ leaf := must be in KnownFexes.fexes
 Mark Sammons, Christos Christodoulopoulos, Parisa Kordjamshidi, Daniel Khashabi, Vivek Srikumar, Paul Vijayakumar, Mazin Bokhari, Xinbo Wu, Dan Roth, EDISON: Feature Extraction for NLP, Simplified. Proceedings of the Tenth International Conference on Language Resources and Evaluation (LREC 2016) (2016) pp.
 
 Thank you for citing us if you use us in your work! http://cogcomp.cs.illinois.edu/page/software_view/Edison
+
+```
+@inproceedings{SCKKSVBWR16,
+    author = {Mark Sammons, Christos Christodoulopoulos, Parisa Kordjamshidi, Daniel Khashabi, Vivek Srikumar, Paul Vijayakumar, Mazin Bokhari, Xinbo Wu, Dan Roth},
+    title = {EDISON: Feature Extraction for NLP, Simplified},
+    booktitle = {Proceedings of the Tenth International Conference on Language Resources and Evaluation (LREC 2016)},
+    year = {2016},
+    publisher = {European Language Resources Association (ELRA)},
+    editor = {Nicoletta Calzolari (Conference Chair) and Khalid Choukri and Thierry Declerck and Marko Grobelnik and Bente Maegaard and Joseph Mariani and Asuncion Moreno and Jan Odijk and Stelios Piperidis},
+    url = "http://cogcomp.cs.illinois.edu/papers/SCKKSVBWR16.pdf",
+}
+```

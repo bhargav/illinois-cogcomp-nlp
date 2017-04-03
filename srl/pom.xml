@@ -4,7 +4,7 @@
     <parent>
         <artifactId>illinois-cogcomp-nlp</artifactId>
         <groupId>edu.illinois.cs.cogcomp</groupId>
-        <version>3.0.77</version>
+        <version>3.1.1</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -15,7 +15,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <cogcomp-nlp-pipeline-version>0.1.24</cogcomp-nlp-pipeline-version>
     </properties>
 
     <dependencies>
@@ -38,7 +37,7 @@
         <dependency>
             <groupId>edu.illinois.cs.cogcomp</groupId>
             <artifactId>illinois-nlp-pipeline</artifactId>
-            <version>${cogcomp-nlp-pipeline-version}</version>
+            <version>3.1.1</version>
             <exclusions>
                 <exclusion>
                     <artifactId>illinois-srl</artifactId>
@@ -51,12 +50,12 @@
         <dependency>
             <groupId>edu.illinois.cs.cogcomp</groupId>
             <artifactId>illinois-core-utilities</artifactId>
-            <version>3.0.77</version>
+            <version>3.1.1</version>
         </dependency>
         <dependency>
             <groupId>edu.illinois.cs.cogcomp</groupId>
             <artifactId>illinois-curator</artifactId>
-            <version>3.0.77</version>
+            <version>3.1.1</version>
         </dependency>
         <dependency>
             <groupId>edu.illinois.cs.cogcomp</groupId>
@@ -89,7 +88,7 @@
         <dependency>
             <groupId>edu.illinois.cs.cogcomp</groupId>
             <artifactId>illinois-sl-core</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.7</version>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>

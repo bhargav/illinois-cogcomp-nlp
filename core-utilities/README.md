@@ -296,8 +296,8 @@ for (Constituent neConstituent : ne.getConstituents()) {
 `AnnotatorService` is our super-wrapper that provides access to different annotations and free caching. 
  Currently we have two classes implementing `AnnotatorService`: 
  
-  1. illinois-curator 
-  2. illinois-pipeline 
+  1. [illinois-curator](../curator/README.md)
+  2. [illinois-nlp-pipeline](../pipeline/README.md)
 
 
 The image below describes the different ways of creating 
@@ -305,11 +305,15 @@ The image below describes the different ways of creating
 
 ![schema 001](https://cloud.githubusercontent.com/assets/2441454/10808693/4132f746-7dbc-11e5-8d6a-b5fe1e8ed0b8.png)
 
-Below is an example of how to use `IllinoisPipelineFactory` to create new annotations. 
+Below is an example of how to use `PipelineFactory` to create new annotations. 
 
 ```java 
-AnnotatorService annotator = IllinoisPipelineFactory.buildPipeline();
-// Or alternatively to use the curator: 
+using edu.illinois.cs.cogcomp.pipeline.main.PipelineFactory;
+
+AnnotatorService annotator = PipelineFactory.buildPipeline();
+
+// Or alternatively to use the curator:
+// using edu.illinois.cs.cogcomp.curator.CuratorFactory;
 // AnnotatorService annotator = CuratorFactory.buildCuratorClient();
 ```
 
@@ -346,6 +350,112 @@ for (int i = 0; i < ta.size(); i++) {
 }
 ```
 
+###Creating Annotators
+
+The `AnnotatorService` class is based on stringing together classes that
+extend the `Annotator` abstract class. This class is used within the 
+project to wrap the Illinois POS, Chunker, Lemmatizer, and NER.
+
+In your extension of `Annotator` you need to define the following methods:
+
+`addView(TextAnnotation ta)`
+
+This method is invoked by `Annotator.getView(TextAnnotation ta)`, and
+does the actual work of creating a `View` object, populating it with
+`Contituent` and `Relation` objects as appropriate, and adding it
+to the `TextAnnotation` argument.  This method should first check that
+the argument contains all the necessary prerequisite views (the names
+of these views are also required by the `Annotator` constructor) and
+throw an exception if they are not.
+
+`initialize(ResourceManager rm)`
+
+This method should read configuration parameters (including paths
+from which to load resources) from the `ResourceManager` argument. 
+Your class constructor will provide a ResourceManager object as an
+argument to the `Annotator` constructor. This is used for lazy 
+initialization, if active, in which case the first call to `getView()`
+will call `initialize()` with this configuration. 
+
+One key configuration default, `AnnotatorConfigurator.IS_SENTENCE_LEVEL`
+indicates whether an annotator requires context beyond a single sentence.
+For example, when the POS tagger predicts a label for a word, it uses
+only information from the same sentence. This means that a document
+can be split up into sentences, which can then be processed one at a 
+time by the POS annotator, without degrading accuracy. NER,
+on the other hand, has features that depend on a context that may 
+extend into previous sentences: if the sentence-by-sentence approach
+is used for NER, some degradation is to be expected. 
+
+###Configurators
+
+For ease of use of your own NLP software, especially classes that
+extend `Annotator` or `AnnotatorService`, you are encouraged to create 
+a `Configurator` class that specifies the relevant configuration flags 
+and their default values. 
+
+The POS, Chunker, Lemmatizer and NER modules all have their own 
+extension of the `Configurator` class for this purpose.  This makes
+it easy to specify a default constructor for your annotator, and
+to specify only non-default configuration options when you instantiate
+one or more classes that use `ResourceManager` and `Configurator`
+to manage configuration options.
+
+###Serialization and Deserialization
+
+To store `TextAnnotation` objects on disk, serialization/deserialization is supported in the following formats:
+
+- Binary Serialization: Binary serialization using Apache Common's `SerializationUtils` to serialize the `TextAnnotation` class. 
+```java
+import edu.illinois.cs.cogcomp.core.utilities.SerializationHelper;
+
+// Serialize and save to file
+SerializationHelper.serializeTextAnnotationToFile(ta, "text_annotation.bin", true);
+
+// Read file from disk and deserialize
+TextAnnotation ta = SerializationHelper.deserializeTextAnnotationFromFile("text_annotation.bin")
+```
+
+- JSON: Lightweight human-readable data-interchange format.
+```java
+import edu.illinois.cs.cogcomp.core.utilities.SerializationHelper;
+
+String jsonString = SerializationHelper.serializeToJson(ta);
+
+TextAnnotation ta = SerializationHelper.deserializeFromJson(jsonString);
+```
+
+- [Protocol Buffer (Version 2)](https://developers.google.com/protocol-buffers/): Protocol Buffers are Google' language-neutral, platform-neutral mechanism for serializing structured data. Structure definition for TextAnnotation is defined at [TextAnnotation.proto](src/main/proto/TextAnnotation.proto).
+```java
+import edu.illinois.cs.cogcomp.core.utilities.SerializationHelper;
+
+// Serialize and save to file
+SerializationHelper.serializeTextAnnotationToProtobuf(ta, "text_annotation.buf", true);
+
+// Read file from disk and deserialize
+TextAnnotation ta = SerializationHelper.deserializeFromProtobuf("text_annotation.buf");
+```
+
+More usage information in the `SerializationHelper` class.
+
+###Generating Protocol Buffer Java Code
+
+**Note:** If you make any change to TextAnnotation class which involves adding/removing data items, make sure to update the
+protocol buffer schema and the corresponding serialization code accordingly.
+
+Install the [Protocol Buffer compiler](https://github.com/google/protobuf#protocol-compiler-installation) locally.
+
+On macOS, you can install the compiler using Homebrew: `brew install protobuf`.
+
+Run the following commands from the repository root:
+
+```bash
+protoc --java_out=core-utilities/src/main/java core-utilities/src/main/proto/TextAnnotation.proto
+
+mvn license:format
+```
+
 ##Citation
 
-Thank you for citing us if you use us in your work! 
+If you use this code in your research, please provide the URL for this github repository in the relevant publications.  
+If you use any of the NLP modules, please check their README files to see if there are relevant publications to cite. 

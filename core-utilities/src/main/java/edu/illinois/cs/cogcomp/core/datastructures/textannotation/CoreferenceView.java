@@ -8,11 +8,12 @@
 package edu.illinois.cs.cogcomp.core.datastructures.textannotation;
 
 import edu.illinois.cs.cogcomp.core.algorithms.Mappers;
-import edu.illinois.cs.cogcomp.core.algorithms.ProducerConsumer;
 import edu.illinois.cs.cogcomp.core.algorithms.Sorters;
 import edu.illinois.cs.cogcomp.core.transformers.ITransformer;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.procedure.TIntProcedure;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -21,6 +22,7 @@ import java.util.*;
  */
 
 public class CoreferenceView extends View {
+    private static Logger logger = LoggerFactory.getLogger(CoreferenceView.class);
 
     private static final long serialVersionUID = -5490913231260663181L;
 
@@ -173,10 +175,9 @@ public class CoreferenceView extends View {
         if (incomingRelations.isEmpty())
             return c;
         if (incomingRelations.size() > 1)
-            System.out
-                    .println("Warning: constituent belongs to more than one cluster; we returned only one of them.\n"
-                            + "If you are deadline with overlapping clusters, and want to get all of the canonical elements, "
-                            + "\"getCanonicalEntitySetViaRelation\" function. ");
+            logger.warn("Warning: constituent belongs to more than one cluster; we returned only one of them.\n"
+                    + "If you are deadline with overlapping clusters, and want to get all of the canonical elements, "
+                    + "\"getCanonicalEntitySetViaRelation\" function. ");
         return incomingRelations.get(0).source;
     }
 

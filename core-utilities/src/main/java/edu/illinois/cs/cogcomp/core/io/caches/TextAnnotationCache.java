@@ -27,5 +27,7 @@ public interface TextAnnotationCache {
 
     void removeTextAnnotation(TextAnnotation ta);
 
+    TextAnnotation getTextAnnotation(TextAnnotation ta);
+
     void close();
 }

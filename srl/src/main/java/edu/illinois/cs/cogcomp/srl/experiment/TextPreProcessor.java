@@ -15,7 +15,7 @@ import edu.illinois.cs.cogcomp.core.utilities.configuration.ResourceManager;
 import edu.illinois.cs.cogcomp.curator.CuratorFactory;
 import edu.illinois.cs.cogcomp.edison.annotators.ClauseViewGenerator;
 import edu.illinois.cs.cogcomp.edison.annotators.HeadFinderDependencyViewGenerator;
-import edu.illinois.cs.cogcomp.nlp.pipeline.IllinoisPipelineFactory;
+import edu.illinois.cs.cogcomp.pipeline.main.PipelineFactory;
 import edu.illinois.cs.cogcomp.srl.SRLProperties;
 import edu.illinois.cs.cogcomp.srl.config.SrlConfigurator;
 import org.slf4j.Logger;
@@ -48,7 +48,7 @@ public class TextPreProcessor {
                 System.exit(-1);
             }
             annotator =
-                    IllinoisPipelineFactory.buildPipeline(new ResourceManager(config
+                    PipelineFactory.buildPipeline(new ResourceManager(config
                             .getPipelineConfig()));
         }
     }
