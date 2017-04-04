@@ -12,7 +12,7 @@ import edu.illinois.cs.cogcomp.core.io.IOUtils;
 import edu.illinois.cs.cogcomp.edison.features.FeatureExtractor;
 import edu.illinois.cs.cogcomp.edison.features.manifest.FeatureManifest;
 import edu.illinois.cs.cogcomp.sl.util.WeightVector;
-import edu.illinois.cs.cogcomp.srl.utilities.WeightVectorUtils;
+import edu.illinois.cs.cogcomp.sl.util.WeightVectorUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
