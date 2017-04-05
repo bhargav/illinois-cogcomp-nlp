@@ -1,4 +1,5 @@
 #!/bin/sh
+set -euf -o pipefail
 
 ## Important - change this ONLY when the minor version changes
 VERSION=5.1

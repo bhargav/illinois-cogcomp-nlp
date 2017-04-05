@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euf -o pipefail
+
 mvn clean compile
 mvn -q dependency:copy-dependencies
 
