@@ -10,6 +10,8 @@ package edu.illinois.cs.cogcomp.pipeline.main;
 import edu.illinois.cs.cogcomp.annotation.AnnotatorException;
 import edu.illinois.cs.cogcomp.annotation.AnnotatorService;
 import edu.illinois.cs.cogcomp.core.datastructures.ViewNames;
+import edu.illinois.cs.cogcomp.core.datastructures.textannotation.Constituent;
+import edu.illinois.cs.cogcomp.core.datastructures.textannotation.PredicateArgumentView;
 import edu.illinois.cs.cogcomp.core.datastructures.textannotation.TextAnnotation;
 import edu.illinois.cs.cogcomp.core.utilities.DummyTextAnnotationGenerator;
 import edu.illinois.cs.cogcomp.pipeline.handlers.PathLSTMHandler;
@@ -43,6 +45,17 @@ public class ExternalAnnotatorsTest {
         service.addView(ta, PathLSTMHandler.SRL_VERB_PATH_LSTM);
         assertTrue(ta.hasView(PathLSTMHandler.SRL_VERB_PATH_LSTM));
         assertTrue(ta.getView(PathLSTMHandler.SRL_VERB_PATH_LSTM).getConstituents().size() > 5);
+
+        PredicateArgumentView pathLSTMView = (PredicateArgumentView) ta.getView(PathLSTMHandler.SRL_VERB_PATH_LSTM);
+        for (Constituent predicate: pathLSTMView.getPredicates()) {
+            assertTrue(predicate.hasAttribute(PredicateArgumentView.SenseIdentifer));
+
+            // Verify that sense is a valid as per the expectation of PredicateArgumentEvaluator and
+            // existing PennTreebank Reader.
+            String sense = predicate.getAttribute(PredicateArgumentView.SenseIdentifer);
+            assertTrue(sense.length() == 2);
+            assertTrue(Integer.parseInt(sense) > 0);
+        }
 
         service.addView(ta, StanfordOpenIEHandler.viewName);
         assertTrue(ta.hasView(StanfordOpenIEHandler.viewName));

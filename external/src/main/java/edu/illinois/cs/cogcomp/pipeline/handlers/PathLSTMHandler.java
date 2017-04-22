@@ -109,6 +109,11 @@ public class PathLSTMHandler extends Annotator {
             predicate.addAttribute(PredicateArgumentView.LemmaIdentifier, predicateLemma);
 
             String sense = p.getSense();
+            int dotPosition = sense.lastIndexOf('.');
+            if (dotPosition > 0) {
+                sense = sense.substring(dotPosition);
+            }
+
             predicate.addAttribute(PredicateArgumentView.SenseIdentifer, sense);
 
             List<Constituent> args = new ArrayList<>();
